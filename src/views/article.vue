@@ -1,23 +1,31 @@
 <template>
-  <main id="article">
+  <main id="article-post"  >
     <div class="header">{{article.title}}</div>
     <div class="articleBody markdown-body" v-html="article.content"></div>
+    
   </main>
 </template>
 
+
+
 <script>
 export default {
-  name:'article',
+  name:'article-post',
   data(){
     return {
-      article:[]
+      article:[],
+      count:0
     }
+  },
+  methods:{
+    
   },
   beforeMount(){
     this.$axios.get(`https://cnodejs.org/api/v1/topic/${this.$route.params.articleId}`)
       .then((res)=>{
         this.article = res.data.data;
         console.log(res.data.data);
+        
       }).catch((err)=>{
         console.log(err);
       })
@@ -41,7 +49,7 @@ export default {
         }
     }
 
-#article{
+#article-post{
   width:100%;
   margin:5% auto;
 }
@@ -50,12 +58,5 @@ export default {
   font-size: 2rem;
 }
 
-.articleBody{
-
-}
-
-</style>
-
-<style lang="stylus" scoped>
 
 </style>

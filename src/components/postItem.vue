@@ -18,7 +18,7 @@
           <span>{{item.visit_count}}</span>
         </div>
         <div class="title">
-          <router-link :to="{name:'article',params:{articleId:item.id}}">
+          <router-link :to="{name:'article-post',params:{articleId:item.id}}">
             <div>{{item.title}}</div>
           </router-link>
         </div>

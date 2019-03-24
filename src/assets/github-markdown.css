@@ -199,6 +199,11 @@
 .markdown-body a:active,
 .markdown-body a:hover {
   outline-width: 0;
+  font-weight:bolder;
+  border-bottom: 1px solid #859d87;
+  background: -webkit-linear-gradient(#122625 5%, #445b55 15%, #859d87 );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .markdown-body strong {
@@ -256,6 +261,7 @@
   color: #0366d6;
   text-decoration: none;
 }
+
 
 .markdown-body a:hover {
   text-decoration: underline;
@@ -534,9 +540,27 @@
 }
 
 .markdown-body blockquote {
-  border-left: .25em solid #dfe2e5;
-  color: #6a737d;
+  border-left: .25em solid #859d87;
+  color: #445b55;
   padding: 0 1em;
+  background:rgba(255, 255, 255, 0.411);
+  box-shadow: 1px 2px 2px 1px rgba(0,0,0,0.25);
+  display:flow-root;
+}
+
+.markdown-body blockquote::before{
+  content:'"';
+  font-size: 2rem;
+  color:#859d87;
+  font-weight: bold;
+}
+
+.markdown-body blockquote::after{
+  float:right;
+  content:'"';
+  font-size: 2rem;
+  color:#859d87;
+  font-weight: bold;
 }
 
 .markdown-body blockquote>:first-child {
