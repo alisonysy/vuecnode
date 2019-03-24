@@ -2,8 +2,8 @@
   <div id="postItem">
     <div class="circles">
       <svg viewBox="-5 -5 11 11" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="5%" cy="-40%" r="20%" fill="#e6ddd8"></circle>
-        <circle cx="5%" cy="50%" r="20%" fill="#e6ddd8"></circle>
+        <circle cx="5%" cy="-40%" r="20%" fill="#e6ddd8" ></circle>
+        <circle cx="5%" cy="50%" r="20%" fill="#e6ddd8" ></circle>
       </svg>
     </div>
     <div class="info-wrapper">
@@ -17,7 +17,11 @@
           <span>{{item.reply_count}}</span> /
           <span>{{item.visit_count}}</span>
         </div>
-        <div class="title"><a href=""><div>{{item.title}}</div></a></div>
+        <div class="title">
+          <router-link :to="{name:'article',params:{articleId:item.id}}">
+            <div>{{item.title}}</div>
+          </router-link>
+        </div>
         <div class="creator">
           <a href>{{item.author.loginname}}</a>
           <a href=""><img :src="item.author.avatar_url" :alt="item.author.loginname"></a>

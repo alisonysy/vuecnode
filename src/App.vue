@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <navbar/>
-    <post-list/>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -30,8 +30,6 @@ export default {
 
 #app{
   font-family: '微软雅黑',tahoma, arial, sans-serif;
-
-  background: #e6ddd8;
 }
 
 @media screen and (min-width: 500px){

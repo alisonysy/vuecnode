@@ -1,7 +1,7 @@
 <template>
   <main id="postList">
     <ul>
-      <li v-for="post in postItems" v-bind:key="post.author_id">
+      <li v-for="post in postItems" v-bind:key="post.id">
         <postItem :item="post"/>
       </li>
     </ul>
