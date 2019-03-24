@@ -124,7 +124,7 @@ svg {
   margin-top: 0.5rem;
   display:inline-block;
   color:#d1c9bc;
-  width:8%;
+  width:13%;
 }
 
 .data-wrapper > span:first-of-type{
@@ -139,7 +139,7 @@ svg {
 
 .title{
   display:inline-block;
-  width:73%;
+  width:60%;
   padding-left: 0.6rem;
 }
 

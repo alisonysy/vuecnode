@@ -20,18 +20,24 @@
       </div>
     </div>
     <div class="articleBody markdown-body" v-html="article.content"></div>
+    <replies :reply-item="article.replies"></replies>
   </main>
 </template>
 
 
 
 <script>
+import replies from '@/components/replies.vue';
+
 export default {
   name: "article-post",
   data() {
     return {
       article: []
     };
+  },
+  components:{
+    replies
   },
   methods: {},
   beforeMount() {
@@ -65,7 +71,7 @@ export default {
 
 <style>
 @import url("../assets/github-markdown.css");
-.markdown-body {
+#article-post .markdown-body {
   box-sizing: border-box;
   min-width: 200px;
   max-width: 65%;
@@ -96,7 +102,7 @@ export default {
   position: absolute;
   content: attr(title);
   top: -300%;
-  left: 38%;
+  right: 0%;
   font-size: 400%;
   font-weight: bolder;
   color: #e6ddd8;
@@ -149,12 +155,17 @@ export default {
   margin: 1rem 0;
   display: flex;
   align-items: center;
+  width:100%;
 }
 
 #article-post .authorInfo > img{
   width:4rem;
   height: 4rem;
   margin: 0 2rem 0 1rem;
+}
+
+#article-post .authorInfo span{
+  display:inline-block;
 }
 
 #article-post .articleData span:nth-of-type(2){
