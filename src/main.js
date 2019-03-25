@@ -28,7 +28,7 @@ Vue.filter('tab-processor',function(val){
 
 Vue.filter('formatDate', function (str) {
   if (!str) return ''
-  var date = new Date(str)
+  var date = new Date(str);
   var time = new Date().getTime() - date.getTime() //现在的时间-传入的时间 = 相差的时间（单位 = 毫秒）
   if (time < 0) {
     return ''
