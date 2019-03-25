@@ -30,22 +30,24 @@
         <use xlink:href="#icon-arrowright"></use>
       </svg>
     </div>
-    <div class="replyDetail" v-if="detail">
-      <div class="replyDetailBox">
-        <div class="replyBasics clearfix">
-          <img :src="li.author.avatar_url" :alt="li.author.loginname">
-          <span>{{li.author.loginname}}</span>
-          <span>{{li.create_at | formatDate}}</span>
-          <span>
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-thumbs-up"></use>
-            </svg>
-            {{li.ups.length}}
-          </span>
+    <transition name="slide">
+      <div class="replyDetail" v-if="detail">
+        <div class="replyDetailBox">
+          <div class="replyBasics clearfix">
+            <img :src="li.author.avatar_url" :alt="li.author.loginname">
+            <span>{{li.author.loginname}}</span>
+            <span>{{li.create_at | formatDate}}</span>
+            <span>
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-thumbs-up"></use>
+              </svg>
+              {{li.ups.length}}
+            </span>
+          </div>
+          <div class="fullContent markdown-body" v-html="li.content"></div>
         </div>
-        <div class="fullContent markdown-body" v-html="li.content"></div>
       </div>
-    </div>
+    </transition>
   </section>
 </template>
 
@@ -55,7 +57,7 @@ export default {
   data() {
     return {
       detail: false,
-      li:{}
+      li: {}
     };
   },
   props: ["reply-item"],
@@ -67,16 +69,39 @@ export default {
       document.getElementById("replyListId").scrollLeft += 224;
     },
     viewDetail(e) {
-      this.detail=false;
-      let liTarget = e.path.reverse().find(function(el) {
-        return el.nodeName === "LI";
+      this.detail = false;
+      let liTarget;
+      let id;
+      
+      if (!e.path) {
+        //for IE compatibility purpose
+        function findParent(el) {
+        return el.parentElement;
+      }
+        let el = e.target;
+        if (!el.dataset.id) {
+          while (!el.dataset.id) {
+            el = findParent(el);
+          }
+          liTarget = el;
+        } else {
+          liTarget = e.target;
+        }
+        id = liTarget.dataset.id;
+      } else {
+        liTarget = e
+          .composedPath()
+          .reverse()
+          .find(function(el) {
+            return el.nodeName === "LI";
+          });
+        id = liTarget.querySelector(".replyItems").dataset.id;
+      }
+      let reply = this.replyItem.find(el => {
+        return el.id === id;
       });
-      let id = liTarget.querySelector(".replyItems").dataset.id;
-      let reply=this.replyItem.find((el)=>{
-        return el.id ===id;
-      })
       this.li = reply;
-      this.detail=true;
+      this.detail = true;
     }
   }
 };
@@ -109,13 +134,12 @@ export default {
 
 #replies .replyList .content.markdown-body .markdown-text ul,
 #replies .replyList .content.markdown-body .markdown-text ol,
-#replies .replyList .content.markdown-body .markdown-text li
-{
-  margin:0;
+#replies .replyList .content.markdown-body .markdown-text li {
+  margin: 0;
   padding: 0;
 }
 
-#replies .replyList .content.markdown-body .markdown-text li{
+#replies .replyList .content.markdown-body .markdown-text li {
   width: 12rem;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -125,7 +149,11 @@ export default {
   text-overflow: ellipsis;
 }
 
-#replies .replyList .content.markdown-body .markdown-text :not(p):not(a):not(ul):not(ol):not(li) {
+#replies
+  .replyList
+  .content.markdown-body
+  .markdown-text
+  :not(p):not(a):not(ul):not(ol):not(li) {
   display: none;
 }
 
@@ -137,10 +165,10 @@ export default {
   overflow: hidden;
 }
 
-.clearfix{
-  display:block;
-  content:'';
-  clear:both;
+.clearfix {
+  display: block;
+  content: "";
+  clear: both;
 }
 
 #replies ul,
@@ -203,7 +231,7 @@ export default {
   height: 19rem;
 }
 
-#replies li .replyItems{
+#replies li .replyItems {
   overflow: hidden;
 }
 
@@ -249,18 +277,20 @@ export default {
   background: #445b55;
 }
 
-.replyBasics{
-  padding:2rem;
-  color:#fff;
+.replyBasics {
+  padding: 2rem;
+  color: #fff;
 }
 
-.replyBasics img,  .replyBasics span:nth-of-type(1){
-  float:left;
+.replyBasics img,
+.replyBasics span:nth-of-type(1) {
+  float: left;
   margin-right: 1rem;
 }
 
-.replyBasics span:nth-last-of-type(1), .replyBasics span:nth-last-of-type(2){
-  float:right;
+.replyBasics span:nth-last-of-type(1),
+.replyBasics span:nth-last-of-type(2) {
+  float: right;
   margin-left: 2rem;
   font-size: 0.8rem;
 }
@@ -273,24 +303,43 @@ export default {
   cursor: initial;
 }
 
-.fullContent{
+.fullContent {
   border-left: 0.5rem solid #859d87;
 }
 
-#replies-wrapper .replyDetail .fullContent.markdown-body{
-      margin: 5% 0 5% 5%;
-    padding: 2rem;
-    color:#fff;
+#replies-wrapper .replyDetail .fullContent.markdown-body {
+  margin: 5% 0 5% 5%;
+  padding: 2rem;
+  color: #fff;
 }
 
-#replies-wrapper .replyDetail .fullContent.markdown-body .markdown-text a{
-  color:#859d87;
+#replies-wrapper .replyDetail .fullContent.markdown-body .markdown-text a {
+  color: #859d87;
 }
 
-#replies-wrapper .replyDetail .fullContent.markdown-body .markdown-text a:hover{
-    border-bottom: 1px solid #e6ddd8;
-  background: -webkit-linear-gradient(#859d87 5%, #d1c9bc 15%, #e6ddd8 );
+#replies-wrapper
+  .replyDetail
+  .fullContent.markdown-body
+  .markdown-text
+  a:hover {
+  border-bottom: 1px solid #e6ddd8;
+  background: -webkit-linear-gradient(#859d87 5%, #d1c9bc 15%, #e6ddd8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* reply detail transition */
+.slide-enter-active {
+  transition: all 3s ease;
+}
+
+.slide-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-enter,
+.slide-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>
