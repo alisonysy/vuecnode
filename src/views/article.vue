@@ -93,6 +93,7 @@ export default {
 #article-post .header {
   position: relative;
   width: 75%;
+  text-align: right;
   text-align: end;
   margin: auto;
   margin-top: 12%;
@@ -124,6 +125,7 @@ export default {
   padding-top: 3%;
   color: #445b55;
   width: 50%;
+  text-align: right;
   text-align: end;
 }
 

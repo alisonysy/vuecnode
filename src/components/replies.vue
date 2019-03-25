@@ -4,7 +4,7 @@
     <use xlink:href="#icon-arrowleft"></use>
 </svg>
     <div>
-      <ul class="replyList">
+      <ul class="replyList" id="replyListId">
         <li v-for="reply in replyItem" v-bind:key="reply.id">
           <div class="replyItems">
             <div class="pic">
@@ -38,7 +38,10 @@ export default {
   props: ["reply-item"],
   methods:{
     moveleft(){
-
+      document.getElementById('replyListId').scrollLeft -= 224;
+    },
+    moveright(){
+      document.getElementById('replyListId').scrollLeft += 224;
     }
   }
 };
@@ -53,13 +56,20 @@ export default {
   min-width: 13rem;
 }
 
-#replies .replyList .content.markdown-body .markdown-text p {
+#replies .replyList .content.markdown-body .markdown-text p{
   display: -webkit-box;
-  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
   font-size: 0.8rem;
   text-overflow: ellipsis;
+}
+
+#replies .replyList .content.markdown-body .markdown-text p:first-of-type {
+  -webkit-line-clamp: 4;
+}
+
+#replies .replyList .content.markdown-body .markdown-text p:nth-of-type(2) {
+  -webkit-line-clamp: 1;
 }
 
 .icon {
@@ -108,7 +118,7 @@ export default {
   display: flex;
   align-items: center;
   overflow: auto;
-  overflow-y: scroll;
+  overflow-y: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
