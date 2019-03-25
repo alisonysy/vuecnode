@@ -1,5 +1,8 @@
 <template>
   <main id="article-post">
+    <router-link to="/">
+      <button class="backButton">返回</button>
+    </router-link>
     <div class="header" :title="article.title">
       <span>{{article.title}}</span>
     </div>
@@ -11,11 +14,16 @@
         <span :class="{tab:article.tab}" :v-show="article.tab">{{article.tab | tab-processor}}</span>
       </div>
       <div class="authorInfo">
-        <img :src="article.author.avatar_url" :alt="article.author.loginname">
-        <span>{{article.author.loginname}}</span>
+        <router-link :to="{name:'userinfo',params:{userId:article.author.loginname}}">
+          <img :src="article.author.avatar_url" :alt="article.author.loginname">
+        </router-link>
+        <router-link :to="{name:'userinfo',params:{userId:article.author.loginname}}">
+          <span>{{article.author.loginname}}</span>
+        </router-link>
       </div>
       <div class="articleData">
-        <span>{{article.reply_count}}</span> / <span>{{article.visit_count}}</span>
+        <span>{{article.reply_count}}</span> /
+        <span>{{article.visit_count}}</span>
         <span>最后回复：{{article.last_reply_at | formatDate}}</span>
       </div>
     </div>
@@ -27,7 +35,7 @@
 
 
 <script>
-import replies from '@/components/replies.vue';
+import replies from "@/components/replies.vue";
 
 export default {
   name: "article-post",
@@ -36,7 +44,7 @@ export default {
       article: []
     };
   },
-  components:{
+  components: {
     replies
   },
   methods: {},
@@ -88,6 +96,26 @@ export default {
 #article-post {
   width: 100%;
   margin: 5% auto;
+  position: relative;
+}
+
+#article-post .backButton {
+  position: absolute;
+  left: 10%;
+  top: 0rem;
+  background: #445b55;
+  border-radius: 5px;
+  padding: 0.5rem;
+  font-family: "微软雅黑", tahoma, arial, sans-serif;
+  font-size: 0.8rem;
+  color: #fff;
+  border: none;
+}
+
+#article-post .backButton:hover {
+  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.25);
+  transform: scale(1.02);
+  cursor: pointer;
 }
 
 #article-post .header {
@@ -133,19 +161,21 @@ export default {
   margin-top: 4%;
 }
 
-#article-post .articleInfo{
-  width:28%;
-  background:#122625;
+#article-post .articleInfo {
+  width: 28%;
+  background: #122625;
   float: left;
-  padding:2rem;
-  color:#fff;
-}
-
-.tabs{
+  padding: 2rem;
   color: #fff;
 }
 
-.top, .good, .tab{
+.tabs {
+  color: #fff;
+}
+
+.top,
+.good,
+.tab {
   border-radius: 5px;
   padding: 0.1rem 0.3rem;
   margin: 0 0.3rem;
@@ -153,32 +183,33 @@ export default {
   background: #859d87;
 }
 
-#article-post .authorInfo{
+#article-post .authorInfo {
   margin: 1rem 0;
   display: flex;
   align-items: center;
-  width:100%;
+  width: 100%;
 }
 
-#article-post .authorInfo > img{
-  width:4rem;
+#article-post .articleInfo .authorInfo img {
+  width: 4rem;
   height: 4rem;
   margin: 0 2rem 0 1rem;
 }
 
-#article-post .authorInfo span{
-  display:inline-block;
+#article-post .authorInfo span {
+  display: inline-block;
+  color:#fff;
 }
 
-#article-post .articleData span:nth-of-type(2){
-  color:#e6ddd8;
+#article-post .articleData span:nth-of-type(2) {
+  color: #e6ddd8;
   font-size: 0.7rem;
 }
 
-#article-post .articleData span:nth-of-type(3){
+#article-post .articleData span:nth-of-type(3) {
   margin-top: 0.5rem;
-  display:block;
+  display: block;
   font-size: 0.9rem;
-  color:#e6ddd8;
+  color: #e6ddd8;
 }
 </style>

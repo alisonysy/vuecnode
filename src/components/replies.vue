@@ -9,8 +9,12 @@
           <li v-for="reply in replyItem" v-bind:key="reply.id" @click="viewDetail">
             <div class="replyItems" :data-id="reply.id">
               <div class="pic">
-                <img :src="reply.author.avatar_url" :alt="reply.author.loginname">
-                <span>{{reply.author.loginname}}</span>
+                <router-link :to="{name:'userinfo',params:{userId:reply.author.loginname}}">
+                  <img :src="reply.author.avatar_url" :alt="reply.author.loginname">
+                </router-link>
+                <router-link :to="{name:'userinfo',params:{userId:reply.author.loginname}}">
+                  <span>{{reply.author.loginname}}</span>
+                </router-link>
               </div>
               <div class="reply-content">
                 <span>{{reply.create_at | formatDate}}</span>
@@ -34,8 +38,12 @@
       <div class="replyDetail" v-if="detail">
         <div class="replyDetailBox">
           <div class="replyBasics clearfix">
-            <img :src="li.author.avatar_url" :alt="li.author.loginname">
-            <span>{{li.author.loginname}}</span>
+            <router-link :to="{name:'userinfo',params:{userId:li.author.loginname}}">
+              <img :src="li.author.avatar_url" :alt="li.author.loginname">
+            </router-link>
+            <router-link :to="{name:'userinfo',params:{userId:li.author.loginname}}">
+              <span>{{li.author.loginname}}</span>
+            </router-link>
             <span>{{li.create_at | formatDate}}</span>
             <span>
               <svg class="icon" aria-hidden="true">
@@ -72,12 +80,12 @@ export default {
       this.detail = false;
       let liTarget;
       let id;
-      
+
       if (!e.path) {
         //for IE compatibility purpose
         function findParent(el) {
-        return el.parentElement;
-      }
+          return el.parentElement;
+        }
         let el = e.target;
         if (!el.dataset.id) {
           while (!el.dataset.id) {
@@ -246,10 +254,15 @@ export default {
   height: 4rem;
 }
 
+#replies .pic a {
+  text-decoration: none;
+}
+
 #replies .pic span {
   display: block;
   margin-top: 0.5rem;
   font-size: 1em;
+  color: #fff;
 }
 
 #replies .reply-content {
@@ -283,12 +296,15 @@ export default {
 }
 
 .replyBasics img,
-.replyBasics span:nth-of-type(1) {
+.replyBasics a > span:first-of-type {
   float: left;
   margin-right: 1rem;
+  margin-left: 0;
+  font-size: 1rem;
+  color:#fff;
 }
 
-.replyBasics span:nth-last-of-type(1),
+.replyBasics  span:nth-last-of-type(1),
 .replyBasics span:nth-last-of-type(2) {
   float: right;
   margin-left: 2rem;
