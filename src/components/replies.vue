@@ -1,47 +1,82 @@
 <template>
-  <section id="replies">
-    <svg class="icon" aria-hidden="true" @click="moveleft">
-    <use xlink:href="#icon-arrowleft"></use>
-</svg>
-    <div>
-      <ul class="replyList" id="replyListId">
-        <li v-for="reply in replyItem" v-bind:key="reply.id">
-          <div class="replyItems">
-            <div class="pic">
-              <img :src="reply.author.avatar_url" :alt="reply.author.loginname">
-              <span>{{reply.author.loginname}}</span>
-            </div>
-            <div class="reply-content">
-              <span>{{reply.create_at | formatDate}}</span>
-              <span>
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-thumbs-up"></use>
-                </svg>
-                {{reply.ups.length}}
-              </span>
+  <section id="replies-wrapper">
+    <div id="replies">
+      <svg class="icon" aria-hidden="true" @click="moveleft">
+        <use xlink:href="#icon-arrowleft"></use>
+      </svg>
+      <div>
+        <ul class="replyList" id="replyListId">
+          <li v-for="reply in replyItem" v-bind:key="reply.id" @click="viewDetail">
+            <div class="replyItems" :data-id="reply.id">
+              <div class="pic">
+                <img :src="reply.author.avatar_url" :alt="reply.author.loginname">
+                <span>{{reply.author.loginname}}</span>
+              </div>
+              <div class="reply-content">
+                <span>{{reply.create_at | formatDate}}</span>
+                <span>
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-thumbs-up"></use>
+                  </svg>
+                  {{reply.ups.length}}
+                </span>
               </div>
               <div class="content markdown-body" v-html="reply.content"></div>
-            
-          </div>
-        </li>
-      </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <svg class="icon" aria-hidden="true" @click="moveright">
+        <use xlink:href="#icon-arrowright"></use>
+      </svg>
     </div>
-    <svg class="icon" aria-hidden="true" @click="moveright">
-    <use xlink:href="#icon-arrowright"></use>
-</svg>
+    <div class="replyDetail" v-if="detail">
+      <div class="replyDetailBox">
+        <div class="replyBasics clearfix">
+          <img :src="li.author.avatar_url" :alt="li.author.loginname">
+          <span>{{li.author.loginname}}</span>
+          <span>{{li.create_at | formatDate}}</span>
+          <span>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-thumbs-up"></use>
+            </svg>
+            {{li.ups.length}}
+          </span>
+        </div>
+        <div class="fullContent markdown-body" v-html="li.content"></div>
+      </div>
+    </div>
   </section>
 </template>
 
 <script>
 export default {
   name: "replies",
+  data() {
+    return {
+      detail: false,
+      li:{}
+    };
+  },
   props: ["reply-item"],
-  methods:{
-    moveleft(){
-      document.getElementById('replyListId').scrollLeft -= 224;
+  methods: {
+    moveleft() {
+      document.getElementById("replyListId").scrollLeft -= 224;
     },
-    moveright(){
-      document.getElementById('replyListId').scrollLeft += 224;
+    moveright() {
+      document.getElementById("replyListId").scrollLeft += 224;
+    },
+    viewDetail(e) {
+      this.detail=false;
+      let liTarget = e.path.reverse().find(function(el) {
+        return el.nodeName === "LI";
+      });
+      let id = liTarget.querySelector(".replyItems").dataset.id;
+      let reply=this.replyItem.find((el)=>{
+        return el.id ===id;
+      })
+      this.li = reply;
+      this.detail=true;
     }
   }
 };
@@ -56,7 +91,7 @@ export default {
   min-width: 13rem;
 }
 
-#replies .replyList .content.markdown-body .markdown-text p{
+#replies .replyList .content.markdown-body .markdown-text p {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -68,8 +103,30 @@ export default {
   -webkit-line-clamp: 4;
 }
 
-#replies .replyList .content.markdown-body .markdown-text p:nth-of-type(2) {
+#replies .replyList .content.markdown-body .markdown-text p {
   -webkit-line-clamp: 1;
+}
+
+#replies .replyList .content.markdown-body .markdown-text ul,
+#replies .replyList .content.markdown-body .markdown-text ol,
+#replies .replyList .content.markdown-body .markdown-text li
+{
+  margin:0;
+  padding: 0;
+}
+
+#replies .replyList .content.markdown-body .markdown-text li{
+  width: 12rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.8rem;
+  -webkit-line-clamp: 1;
+  text-overflow: ellipsis;
+}
+
+#replies .replyList .content.markdown-body .markdown-text :not(p):not(a):not(ul):not(ol):not(li) {
+  display: none;
 }
 
 .icon {
@@ -78,6 +135,12 @@ export default {
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+}
+
+.clearfix{
+  display:block;
+  content:'';
+  clear:both;
 }
 
 #replies ul,
@@ -90,27 +153,27 @@ export default {
   width: 80%;
   margin: 0 0 3rem auto;
   display: flex;
-      align-items: center;
+  align-items: center;
 }
 
 #replies > div {
   overflow: hidden;
-  width:calc(100% - 5rem);
+  width: calc(100% - 5rem);
 }
 
 #replies svg {
   width: 5rem;
   height: 3rem;
-  fill:#859d87;
-  cursor:pointer;
+  fill: #859d87;
+  cursor: pointer;
 }
 
 #replies .reply-content svg.icon {
   width: 1rem;
   margin-right: 0;
-  height:1rem;
-  fill:#fff;
-  cursor:initial;
+  height: 1rem;
+  fill: #fff;
+  cursor: initial;
 }
 
 #replies .replyList {
@@ -140,12 +203,17 @@ export default {
   height: 19rem;
 }
 
+#replies li .replyItems{
+  overflow: hidden;
+}
+
 #replies .pic {
   width: 100%;
   text-align: center;
 }
 
-#replies img {
+#replies .pic img,
+#replies-wrapper .replyBasics img {
   width: 4rem;
   height: 4rem;
 }
@@ -156,9 +224,9 @@ export default {
   font-size: 1em;
 }
 
-#replies .reply-content{
+#replies .reply-content {
   display: flex;
-  margin:0.8rem 0.2rem;
+  margin: 0.8rem 0.2rem;
 }
 
 #replies .reply-content span {
@@ -166,7 +234,63 @@ export default {
 }
 
 #replies .reply-content span:nth-of-type(1) {
-  color:#d1c9bc;
+  color: #d1c9bc;
   margin-right: auto;
+}
+
+/* reply details */
+.replyDetail {
+  width: 80%;
+  margin: 0 0 3rem auto;
+}
+
+.replyDetailBox {
+  width: calc(100%-5rem);
+  background: #445b55;
+}
+
+.replyBasics{
+  padding:2rem;
+  color:#fff;
+}
+
+.replyBasics img,  .replyBasics span:nth-of-type(1){
+  float:left;
+  margin-right: 1rem;
+}
+
+.replyBasics span:nth-last-of-type(1), .replyBasics span:nth-last-of-type(2){
+  float:right;
+  margin-left: 2rem;
+  font-size: 0.8rem;
+}
+
+.replyBasics svg {
+  width: 1rem;
+  margin-right: 0;
+  height: 1rem;
+  fill: #fff;
+  cursor: initial;
+}
+
+.fullContent{
+  border-left: 0.5rem solid #859d87;
+}
+
+#replies-wrapper .replyDetail .fullContent.markdown-body{
+      margin: 5% 0 5% 5%;
+    padding: 2rem;
+    color:#fff;
+}
+
+#replies-wrapper .replyDetail .fullContent.markdown-body .markdown-text a{
+  color:#859d87;
+}
+
+#replies-wrapper .replyDetail .fullContent.markdown-body .markdown-text a:hover{
+    border-bottom: 1px solid #e6ddd8;
+  background: -webkit-linear-gradient(#859d87 5%, #d1c9bc 15%, #e6ddd8 );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 </style>
