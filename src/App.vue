@@ -8,12 +8,14 @@
 <script>
 import navbar from '@/components/navbar.vue';
 import postList from '@/views/postList.vue';
+import userinfo from '@/views/userInfo.vue';
 
 export default {
   name: 'home',
   components: {
     navbar,
-    postList
+    postList,
+    userinfo
   }
 }
 

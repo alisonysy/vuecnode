@@ -17,13 +17,13 @@
           <span>{{user.create_at | signup }}注册</span>
         </div>
         <div class="ui-b-ctr">
-          <div class="ui-b-ctr-createTopics">
+          <div class="ui-b-ctr-createTopics" @click="viewTopics = !viewTopics">
             最近创建的话题
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-arrowright"></use>
             </svg>
           </div>
-          <div class="ui-b-ctr-replies">
+          <div class="ui-b-ctr-replies" @click="viewReplies = !viewReplies">
             最近参与的话题
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-arrowright"></use>
@@ -31,6 +31,17 @@
           </div>
         </div>
       </div>
+      <div class="ui-createTopics" v-if="viewTopics">
+        <div class="ui-createTopics-heading">最近创建的话题</div>
+        <div class="ui-createTopics-post">
+          <ul >
+            <li v-for="post in user.recent_topics" v-bind:key="post.id">
+              <router-link :to="{name:'article-post',params:{articleId:post.id}}">{{post.title}}</router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="ui-replies" v-if="viewReplies"></div>
     </section>
   </div>
 </template>
@@ -40,7 +51,9 @@ export default {
   name: "userinfo",
   data() {
     return {
-      user: {}
+      user: {},
+      viewTopics: false,
+      viewReplies: false
     };
   },
   computed: {
@@ -88,6 +101,9 @@ export default {
 </script>
 
 <style scoped>
+ul,li{list-style: none;}
+a{text-decoration: none;}
+
 .icon {
   width: 1em;
   height: 1em;
@@ -105,7 +121,6 @@ export default {
 .ui-wrapper {
   margin: 0 5%;
   height: 95%;
-  border: 1px solid hotpink;
   display: flex;
   justify-content: flex-start;
 }
@@ -163,24 +178,23 @@ export default {
   font-size: 1rem;
   display: flow-root;
   position: relative;
-    cursor:pointer;
+  cursor: pointer;
 }
 
 .ui-b-ctr .ui-b-ctr-createTopics::before,
-.ui-b-ctr .ui-b-ctr-replies::before{
-  content:'';
-  width:95%;
+.ui-b-ctr .ui-b-ctr-replies::before {
+  content: "";
+  width: 95%;
   position: absolute;
-    border-top: 1px solid #859d878f;
-    left:50%;
-    top:0;
-    transform: translateX(-50%);
+  border-top: 1px solid #859d878f;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
 }
 
 .ui-b-ctr .ui-b-ctr-createTopics:hover,
-.ui-b-ctr .ui-b-ctr-replies:hover{
-  background:#859d8756;
-
+.ui-b-ctr .ui-b-ctr-replies:hover {
+  background: #859d8756;
 }
 
 .ui-b-ctr svg {
@@ -189,4 +203,36 @@ export default {
   float: right;
   padding-bottom: 0.2rem;
 }
+
+.ui-createTopics {
+  height: 100%;
+  background: #122625af;
+        box-shadow: inset 2px 0 6px -1px rgba(0,0,0,0.5);
+
+}
+
+.ui-createTopics-heading{
+  margin:5% auto;
+  padding-left: 2rem;
+  font-size: 1.5rem;
+  color:#e6ddd8;
+}
+
+.ui-createTopics-post ul{
+  margin: 1rem;
+  display:flex;
+  flex-direction: column;
+}
+
+.ui-createTopics-post ul li{
+  flex:0 0 25rem;
+}
+
+.ui-replies {
+  height: 100%;
+  background: #1226256c;
+      box-shadow: inset 2px 0 6px -1px rgba(0,0,0,0.5);
+}
+
+
 </style>
