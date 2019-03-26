@@ -34,9 +34,10 @@
       <div class="ui-createTopics" v-if="viewTopics">
         <div class="ui-createTopics-heading">最近创建的话题</div>
         <div class="ui-createTopics-post">
-          <ul >
+          <ul class="ui-createTopics-post-ul">
             <li v-for="post in user.recent_topics" v-bind:key="post.id">
               <router-link :to="{name:'article-post',params:{articleId:post.id}}">{{post.title}}</router-link>
+              <span>最后回复：{{post.last_reply_at | signup}}</span>
             </li>
           </ul>
         </div>
@@ -101,8 +102,13 @@ export default {
 </script>
 
 <style scoped>
-ul,li{list-style: none;}
-a{text-decoration: none;}
+ul,
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
 
 .icon {
   width: 1em;
@@ -133,6 +139,8 @@ a{text-decoration: none;}
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  flex-shrink: 0;
+  flex-basis: 20rem;
 }
 
 .ui-b-imgName {
@@ -207,32 +215,58 @@ a{text-decoration: none;}
 .ui-createTopics {
   height: 100%;
   background: #122625af;
-        box-shadow: inset 2px 0 6px -1px rgba(0,0,0,0.5);
-
+  box-shadow: inset 2px 0 6px -1px rgba(0, 0, 0, 0.5);
 }
 
-.ui-createTopics-heading{
-  margin:5% auto;
+.ui-createTopics-heading {
+  margin: 2rem auto;
   padding-left: 2rem;
   font-size: 1.5rem;
-  color:#e6ddd8;
+  color: #e6ddd8;
 }
 
-.ui-createTopics-post ul{
-  margin: 1rem;
-  display:flex;
-  flex-direction: column;
+.ui-createTopics-post {
+  height: 80%;
 }
 
-.ui-createTopics-post ul li{
-  flex:0 0 25rem;
+.ui-createTopics-post-ul {
+  height: 100%;
+  display: inline-flex;
+  align-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.ui-createTopics-post-ul li {
+  flex: 0 0 28rem;
+  padding: 0.8rem 0 0.8rem 2rem;
+  display: inline-flex;
+  justify-content: space-between;
+}
+
+.ui-createTopics-post-ul li span {
+  text-align: end;
+  text-align: right;
+  font-size: 0.7rem;
+}
+
+.ui-createTopics-post-ul li a {
+  color: #e6ddd8;
+  font-size: 0.87rem;
+  border-bottom: 1px solid #e6ddd8;
+}
+
+.ui-createTopics-post-ul li a:hover {
+  outline-width: 0;
+  border-bottom: 1px solid #859d87;
+  background: -webkit-linear-gradient(#e6ddd8 5%, #d1c9bc 15%, #859d87);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .ui-replies {
   height: 100%;
   background: #1226256c;
-      box-shadow: inset 2px 0 6px -1px rgba(0,0,0,0.5);
+  box-shadow: inset 2px 0 6px -1px rgba(0, 0, 0, 0.5);
 }
-
-
 </style>
