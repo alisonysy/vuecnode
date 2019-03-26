@@ -17,13 +17,13 @@
           <span>{{user.create_at | signup }}注册</span>
         </div>
         <div class="ui-b-ctr">
-          <div class="ui-b-ctr-createTopics" @click="viewTopics = !viewTopics">
+          <div class="ui-b-ctr-createTopics" @click="topics">
             最近创建的话题
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-arrowright"></use>
             </svg>
           </div>
-          <div class="ui-b-ctr-replies" @click="viewReplies = !viewReplies">
+          <div class="ui-b-ctr-replies" @click="replies">
             最近参与的话题
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-arrowright"></use>
@@ -42,7 +42,17 @@
           </ul>
         </div>
       </div>
-      <div class="ui-replies" v-if="viewReplies"></div>
+      <div class="ui-replies" v-if="viewReplies">
+        <div class="ui-replies-heading">最近参与的话题</div>
+        <div class="ui-replies-post">
+          <ul class="ui-replies-post-ul">
+            <li v-for="reply in user.recent_replies" v-bind:key="reply.id">
+              <router-link :to="{name:'article-post',params:{articleId:reply.id}}">{{reply.title}}</router-link>
+              <span>最后回复：{{reply.last_reply_at | signup}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </section>
   </div>
 </template>
@@ -97,6 +107,16 @@ export default {
         return parseInt(time / 31536000000) + "年前";
       }
     }
+  },
+  methods:{
+    topics(){
+      this.viewReplies=false;
+      this.viewTopics = !this.viewTopics;
+    },
+    replies(){
+      this.viewTopics=false;
+      this.viewReplies = !this.viewReplies;
+    }
   }
 };
 </script>
@@ -121,7 +141,7 @@ a {
 #userInfo-wrapper {
   width: 100vw;
   margin: 0;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .ui-wrapper {
@@ -129,6 +149,7 @@ a {
   height: 95%;
   display: flex;
   justify-content: flex-start;
+  overflow: auto;
 }
 
 .uiBasics {
@@ -218,48 +239,75 @@ a {
   box-shadow: inset 2px 0 6px -1px rgba(0, 0, 0, 0.5);
 }
 
-.ui-createTopics-heading {
+.ui-createTopics-heading, .ui-replies-heading {
   margin: 2rem auto;
   padding-left: 2rem;
   font-size: 1.5rem;
   color: #e6ddd8;
 }
 
-.ui-createTopics-post {
-  height: 80%;
+.ui-createTopics-post, .ui-replies-post {
+  height: 70%;
 }
 
-.ui-createTopics-post-ul {
+.ui-createTopics-post-ul, .ui-replies-post-ul {
   height: 100%;
   display: inline-flex;
   align-content: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
+  overflow: auto;
 }
 
-.ui-createTopics-post-ul li {
+.ui-createTopics-post-ul::-webkit-scrollbar, .ui-replies-post-ul::-webkit-scrollbar{
+  width:5px;
+  height:10px;
+  background-color: #d1c9bc;
+}
+
+.ui-createTopics-post-ul::-webkit-scrollbar-thumb, .ui-replies-post-ul::-webkit-scrollbar-thumb{
+  background:#122625
+}
+
+.ui-createTopics-post-ul li,
+.ui-replies-post-ul li {
   flex: 0 0 28rem;
-  padding: 0.8rem 0 0.8rem 2rem;
+  padding: 0.8rem 0 0.8rem 4rem;
   display: inline-flex;
   justify-content: space-between;
 }
 
-.ui-createTopics-post-ul li span {
+.ui-createTopics-post-ul li span,
+.ui-replies-post-ul li span {
   text-align: end;
   text-align: right;
   font-size: 0.7rem;
 }
 
-.ui-createTopics-post-ul li a {
+.ui-replies-post-ul li span{
+  color:#d1c9bc;
+}
+
+.ui-createTopics-post-ul li a
+ {
   color: #e6ddd8;
   font-size: 0.87rem;
   border-bottom: 1px solid #e6ddd8;
 }
 
-.ui-createTopics-post-ul li a:hover {
+.ui-replies-post-ul li a{
+    color: #122625;
+  font-size: 0.87rem;
+  border-bottom: 1px solid #445b55;
+
+}
+
+.ui-createTopics-post-ul li a:hover,
+.ui-replies-post-ul li a:hover
+ {
   outline-width: 0;
-  border-bottom: 1px solid #859d87;
-  background: -webkit-linear-gradient(#e6ddd8 5%, #d1c9bc 15%, #859d87);
+  border-bottom: 1px solid #d1c9bc;
+  background: -webkit-linear-gradient(#e6ddd8 15%, #d1c9bc 90%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -268,5 +316,7 @@ a {
   height: 100%;
   background: #1226256c;
   box-shadow: inset 2px 0 6px -1px rgba(0, 0, 0, 0.5);
+  overflow: -webkit-paged-x;
+
 }
 </style>
