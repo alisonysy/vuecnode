@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-cloak>
     <navbar/>
     <router-view></router-view>
   </div>
@@ -15,7 +15,7 @@ export default {
   components: {
     navbar,
     postList,
-    userinfo
+    userinfo,
   }
 }
 

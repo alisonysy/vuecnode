@@ -1,29 +1,33 @@
 <template>
-  <main id="postList">
+  <main id="postList" >
     <ul>
       <li v-for="post in postItems" v-bind:key="post.id">
         <postItem :item="post"/>
       </li>
     </ul>
+    {{skipToPage}}
+    <pagination @skip-to="pageBus"/>
   </main>
 </template>
 
 <script>
 import postItem from "@/components/postItem.vue";
+import pagination from "@/components/pagination.vue";
 
 export default {
   name: "postList",
   data() {
     return {
-      postItems: []
+      postItems: [],
+      skipToPage: 1
     };
   },
   components: {
-    postItem
+    postItem,
+    pagination
   },
-  watch:{
-    '$route'(to,from){
-      console.log('changed')
+  watch: {
+    $route(to, from) {
       this.getData();
     }
   },
@@ -32,9 +36,9 @@ export default {
       this.$axios
         .get("https://cnodejs.org/api/v1/topics", {
           params: {
-            page: 1,
+            page: this.skipToPage,
             limit: 20,
-            tab:this.$route.params.tab
+            tab: this.$route.params.tab
           }
         })
         .then(res => {
@@ -44,6 +48,10 @@ export default {
         .catch(err => {
           console.error(err);
         });
+    },
+    pageBus(val) {
+      this.skipToPage = val;
+      this.getData();
     }
   },
   beforeMount() {
@@ -53,29 +61,32 @@ export default {
 </script>
 
 <style scoped>
-a{text-decoration: none;color:inherit;}
+a {
+  text-decoration: none;
+  color: inherit;
+}
 
 ul,
 li {
   list-style: none;
-
 }
 
 ul {
   margin: 0;
   padding: 0;
-    width: 100%;
+  width: 100%;
 }
 
 li {
-  display:block;
+  display: block;
   margin: 0 auto;
-  width:80%;
+  width: 80%;
 }
 
 #postList {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   padding-top: 3rem;
 }
 </style>
