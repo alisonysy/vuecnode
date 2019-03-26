@@ -47,9 +47,9 @@ export default {
   components: {
     replies
   },
-  methods: {},
-  beforeMount() {
-    this.$axios
+  methods: {
+    getData(){
+this.$axios
       .get(`https://cnodejs.org/api/v1/topic/${this.$route.params.articleId}`)
       .then(res => {
         this.article = res.data.data;
@@ -58,6 +58,10 @@ export default {
       .catch(err => {
         console.log(err);
       });
+    }
+  },
+  beforeMount() {
+    this.getData();
   },
   filters: {
     topProcessor(val) {

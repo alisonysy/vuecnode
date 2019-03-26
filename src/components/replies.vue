@@ -71,10 +71,10 @@ export default {
   props: ["reply-item"],
   methods: {
     moveleft() {
-      document.getElementById("replyListId").scrollLeft -= 224;
+      document.getElementById("replyListId").scrollLeft -= 500;
     },
     moveright() {
-      document.getElementById("replyListId").scrollLeft += 224;
+      document.getElementById("replyListId").scrollLeft += 500;
     },
     viewDetail(e) {
       this.detail = false;
@@ -220,6 +220,7 @@ export default {
   overflow-y: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  scroll-behavior: smooth;
 }
 
 #replies .replyList::-webkit-scrollbar {

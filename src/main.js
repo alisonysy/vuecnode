@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './routers/router'
 import axios from 'axios'
+import $ from 'jquery'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios;

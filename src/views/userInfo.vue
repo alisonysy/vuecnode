@@ -31,28 +31,32 @@
           </div>
         </div>
       </div>
-      <div class="ui-createTopics" v-if="viewTopics">
-        <div class="ui-createTopics-heading">最近创建的话题</div>
-        <div class="ui-createTopics-post">
-          <ul class="ui-createTopics-post-ul">
-            <li v-for="post in user.recent_topics" v-bind:key="post.id">
-              <router-link :to="{name:'article-post',params:{articleId:post.id}}">{{post.title}}</router-link>
-              <span>最后回复：{{post.last_reply_at | signup}}</span>
-            </li>
-          </ul>
+      <transition name="ui-topics">
+        <div class="ui-createTopics" v-if="viewTopics">
+          <div class="ui-crt-r-heading">最近创建的话题</div>
+          <div class="ui-createTopics-post">
+            <ul class="ui-createTopics-post-ul">
+              <li v-for="post in user.recent_topics" v-bind:key="post.id">
+                <router-link :to="{name:'article-post',params:{articleId:post.id}}">{{post.title}}</router-link>
+                <span>最后回复：{{post.last_reply_at | signup}}</span>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div class="ui-replies" v-if="viewReplies">
-        <div class="ui-replies-heading">最近参与的话题</div>
-        <div class="ui-replies-post">
-          <ul class="ui-replies-post-ul">
-            <li v-for="reply in user.recent_replies" v-bind:key="reply.id">
-              <router-link :to="{name:'article-post',params:{articleId:reply.id}}">{{reply.title}}</router-link>
-              <span>最后回复：{{reply.last_reply_at | signup}}</span>
-            </li>
-          </ul>
+      </transition>
+      <transition name="ui-replies">
+        <div class="ui-replies" v-if="viewReplies">
+          <div class="ui-crt-r-heading">最近参与的话题</div>
+          <div class="ui-replies-post">
+            <ul class="ui-replies-post-ul">
+              <li v-for="reply in user.recent_replies" v-bind:key="reply.id">
+                <router-link :to="{name:'article-post',params:{articleId:reply.id}}">{{reply.title}}</router-link>
+                <span>最后回复：{{reply.last_reply_at | signup}}</span>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+      </transition>
     </section>
   </div>
 </template>
@@ -108,13 +112,13 @@ export default {
       }
     }
   },
-  methods:{
-    topics(){
-      this.viewReplies=false;
+  methods: {
+    topics() {
+      this.viewReplies = false;
       this.viewTopics = !this.viewTopics;
     },
-    replies(){
-      this.viewTopics=false;
+    replies() {
+      this.viewTopics = false;
       this.viewReplies = !this.viewReplies;
     }
   }
@@ -239,18 +243,21 @@ a {
   box-shadow: inset 2px 0 6px -1px rgba(0, 0, 0, 0.5);
 }
 
-.ui-createTopics-heading, .ui-replies-heading {
+.ui-crt-r-heading {
   margin: 2rem auto;
   padding-left: 2rem;
   font-size: 1.5rem;
   color: #e6ddd8;
 }
 
-.ui-createTopics-post, .ui-replies-post {
+.ui-createTopics-post,
+.ui-replies-post {
   height: 70%;
+  overflow: hidden;
 }
 
-.ui-createTopics-post-ul, .ui-replies-post-ul {
+.ui-createTopics-post-ul,
+.ui-replies-post-ul {
   height: 100%;
   display: inline-flex;
   align-content: flex-start;
@@ -259,14 +266,16 @@ a {
   overflow: auto;
 }
 
-.ui-createTopics-post-ul::-webkit-scrollbar, .ui-replies-post-ul::-webkit-scrollbar{
-  width:5px;
-  height:10px;
+.ui-createTopics-post-ul::-webkit-scrollbar,
+.ui-replies-post-ul::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
   background-color: #d1c9bc;
 }
 
-.ui-createTopics-post-ul::-webkit-scrollbar-thumb, .ui-replies-post-ul::-webkit-scrollbar-thumb{
-  background:#122625
+.ui-createTopics-post-ul::-webkit-scrollbar-thumb,
+.ui-replies-post-ul::-webkit-scrollbar-thumb {
+  background: #122625;
 }
 
 .ui-createTopics-post-ul li,
@@ -284,27 +293,24 @@ a {
   font-size: 0.7rem;
 }
 
-.ui-replies-post-ul li span{
-  color:#d1c9bc;
+.ui-replies-post-ul li span {
+  color: #d1c9bc;
 }
 
-.ui-createTopics-post-ul li a
- {
+.ui-createTopics-post-ul li a {
   color: #e6ddd8;
   font-size: 0.87rem;
   border-bottom: 1px solid #e6ddd8;
 }
 
-.ui-replies-post-ul li a{
-    color: #122625;
+.ui-replies-post-ul li a {
+  color: #122625;
   font-size: 0.87rem;
   border-bottom: 1px solid #445b55;
-
 }
 
 .ui-createTopics-post-ul li a:hover,
-.ui-replies-post-ul li a:hover
- {
+.ui-replies-post-ul li a:hover {
   outline-width: 0;
   border-bottom: 1px solid #d1c9bc;
   background: -webkit-linear-gradient(#e6ddd8 15%, #d1c9bc 90%);
@@ -316,7 +322,33 @@ a {
   height: 100%;
   background: #1226256c;
   box-shadow: inset 2px 0 6px -1px rgba(0, 0, 0, 0.5);
-  overflow: -webkit-paged-x;
+}
+
+/* transitions */
+.ui-topics-enter,
+.ui-topics-leave-to,
+.ui-replies-enter,
+.ui-replies-leave-to {
+  width: 0;
+  z-index: -1;
 
 }
+
+.ui-topics-enter-active,
+.ui-topics-leave-active,
+.ui-replies-enter-active,
+.ui-replies-leave-active {
+  transition: all 0.8s;
+}
+
+.ui-topics-enter-to,
+.ui-topics-leave,
+.ui-replies-enter-to,
+.ui-replies-leave {
+  width: 100%;
+  z-index: -1;
+}
+
+
+
 </style>

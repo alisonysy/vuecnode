@@ -21,13 +21,20 @@ export default {
   components: {
     postItem
   },
+  watch:{
+    '$route'(to,from){
+      console.log('changed')
+      this.getData();
+    }
+  },
   methods: {
     getData() {
       this.$axios
         .get("https://cnodejs.org/api/v1/topics", {
           params: {
             page: 1,
-            limit: 20
+            limit: 20,
+            tab:this.$route.params.tab
           }
         })
         .then(res => {

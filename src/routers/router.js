@@ -14,6 +14,11 @@ export default new Router({
      component:PostList
     },
     {
+      path:'/tab=:tab',
+      name:'category',
+      component:PostList
+    },
+    {
       path:'/article/:articleId',
       name:'article-post',
       component:ArticlePost

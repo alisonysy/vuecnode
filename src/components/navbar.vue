@@ -2,24 +2,24 @@
   <nav>
     <ul>
       <li>
-        <a href>全部</a>
+        <router-link to="/">全部</router-link>
       </li>
       <li>
-        <a href>精华</a>
+        <router-link :to="{name:'category',params:{tab:'good'}}">精华</router-link>
       </li>
       <li>
-        <a href>分享</a>
+        <router-link :to="{name:'category',params:{tab:'share'}}">分享</router-link>
       </li>
       <li>
-        <a href>
+        <router-link to="/">
           <img src="@/assets/cnodejs_light.svg" alt="cnode logo">
-        </a>
+        </router-link>
       </li>
       <li>
-        <a href>问答</a>
+        <router-link :to="{name:'category',params:{tab:'ask'}}">问答</router-link>
       </li>
       <li>
-        <a href>招聘</a>
+        <router-link :to="{name:'category',params:{tab:'job'}}">招聘</router-link>
       </li>
     </ul>
     <svg xmlns="http://www.w3.org/2000/svg">
@@ -64,12 +64,12 @@ ul,
 li {
   list-style: none;
 }
-a {
+li a {
   text-decoration: none;
   color: inherit;
 }
 
-a:hover {
+li a:hover {
   color: #fff;
 }
 
