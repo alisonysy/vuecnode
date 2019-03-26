@@ -5,7 +5,6 @@
         <postItem :item="post"/>
       </li>
     </ul>
-    {{skipToPage}}
     <pagination @skip-to="pageBus"/>
   </main>
 </template>

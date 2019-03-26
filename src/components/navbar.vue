@@ -1,13 +1,13 @@
 <template>
   <nav>
     <ul>
-      <li>
+      <li :class="{active:$route.params.tab===undefined}">
         <router-link to="/">全部</router-link>
       </li>
-      <li>
-        <router-link :to="{name:'category',params:{tab:'good'}}">精华</router-link>
+      <li :class="{active:$route.params.tab==='good'}">
+        <router-link :to="{name:'category',params:{tab:'good'}}" >精华</router-link>
       </li>
-      <li>
+      <li  :class="{active:$route.params.tab==='share'}">
         <router-link :to="{name:'category',params:{tab:'share'}}">分享</router-link>
       </li>
       <li>
@@ -15,10 +15,10 @@
           <img src="@/assets/cnodejs_light.svg" alt="cnode logo">
         </router-link>
       </li>
-      <li>
+      <li  :class="{active:this.$route.params.tab==='ask'}">
         <router-link :to="{name:'category',params:{tab:'ask'}}">问答</router-link>
       </li>
-      <li>
+      <li  :class="{active:$route.params.tab==='job'}">
         <router-link :to="{name:'category',params:{tab:'job'}}">招聘</router-link>
       </li>
     </ul>
@@ -71,6 +71,22 @@ li a {
 
 li a:hover {
   color: #fff;
+}
+
+.active{
+  color:#fff;
+  position: relative;
+}
+
+.active::before{
+  content:'';
+  width:2.5rem;
+  border:1px solid #fff;
+  display: inline-block;
+  position:absolute;
+  bottom:-5px;
+  left:50%;
+  transform: translateX(-50%);
 }
 
 nav {

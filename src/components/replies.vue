@@ -347,7 +347,7 @@ export default {
 
 /* reply detail transition */
 .slide-enter-active {
-  transition: all 3s ease;
+  transition: all 2s ease;
 }
 
 .slide-leave-active {

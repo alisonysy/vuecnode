@@ -1,7 +1,7 @@
 <template>
   <main id="article-post">
     <router-link to="/">
-      <button class="backButton">返回</button>
+      <button class="backButton">返回首页</button>
     </router-link>
     <div class="header" :title="article.title">
       <span>{{article.title}}</span>
@@ -48,16 +48,16 @@ export default {
     replies
   },
   methods: {
-    getData(){
-this.$axios
-      .get(`https://cnodejs.org/api/v1/topic/${this.$route.params.articleId}`)
-      .then(res => {
-        this.article = res.data.data;
-        console.log(res.data.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    getData() {
+      this.$axios
+        .get(`https://cnodejs.org/api/v1/topic/${this.$route.params.articleId}`)
+        .then(res => {
+          this.article = res.data.data;
+          console.log(res.data.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   beforeMount() {
@@ -107,21 +107,20 @@ this.$axios
   position: absolute;
   left: 10%;
   top: 0rem;
-  background: #445b55;
-  border-radius: 5px;
+  background: transparent;
+  border-radius: 3px;
   padding: 0.5rem;
   font-family: "微软雅黑", tahoma, arial, sans-serif;
   font-size: 0.8rem;
-  color: #fff;
-  border: none;
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  color: #122625;
+  border: 1px solid #122625;
+  cursor: pointer;
 }
 
 #article-post .backButton:hover {
-  cursor: pointer;
-  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+  background: #445b55;
+  border: 1px solid #445b55;
+  color: #fff;
 }
 
 #article-post .header {

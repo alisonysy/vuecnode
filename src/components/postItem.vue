@@ -23,8 +23,8 @@
           </router-link>
         </div>
         <div class="creator">
-          <a href>{{item.author.loginname}}</a>
-          <a href=""><img :src="item.author.avatar_url" :alt="item.author.loginname"></a>
+          <router-link :to="{name:'userinfo',params:{userId:item.author.loginname}}">{{item.author.loginname}}</router-link>
+         <router-link :to="{name:'userinfo',params:{userId:item.author.loginname}}"><img :src="item.author.avatar_url" :alt="item.author.loginname"></router-link>
         </div>
       </div>
       <div class="reply-wrapper">
