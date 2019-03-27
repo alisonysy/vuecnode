@@ -1,11 +1,12 @@
 <template>
   <main id="postList" >
+        <pagination @skip-to="pageBus"/>
+
     <ul>
       <li v-for="post in postItems" v-bind:key="post.id">
         <postItem :item="post"/>
       </li>
     </ul>
-    <pagination @skip-to="pageBus"/>
   </main>
 </template>
 
@@ -71,7 +72,7 @@ li {
 }
 
 ul {
-  margin: 0;
+  margin-bottom: 5rem;
   padding: 0;
   width: 100%;
 }
