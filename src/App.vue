@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-cloak>
+  <div id="app" v-cloak >
     <navbar/>
     <router-view></router-view>
   </div>
@@ -16,7 +16,14 @@ export default {
     navbar,
     postList,
     userinfo,
+  },
+  beforeMount(){
+let device = window.innerWidth;
+      if(device<700){
+        alert('Sorry,移动端还在开发中，请移步PC端查看')
+      }
   }
+  
 }
 
 </script>
@@ -39,5 +46,14 @@ export default {
     font-size: 14px;
   }
   
+}
+
+@media screen and (max-width: 600px){
+  #app{
+    display: none;
+  }
+  #app::before{
+    content:'Sorry,移动端还在开发中，请移步PC端查看'
+  }
 }
 </style>
